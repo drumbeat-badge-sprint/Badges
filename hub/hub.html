@@ -16,11 +16,11 @@ chan.bind("badge_put", function(trans, badge) {
     }
 });
 chan.bind("badge_get", function(trans, filter) {
-    alert("test");
+    //alert("test");
     if (!localStorage.badges)
         return [];
     filter = filter? filter : "";
-    alert("test test: " + localStorage.badges);
+    //alert("test test: " + localStorage.badges);
     var badges = JSON.parse(localStorage.badges); 
     return [i for each (i in badges) if (i.badgeURL.indexOf(filter) >= 0)];
 });
