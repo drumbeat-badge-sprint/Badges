@@ -3,8 +3,26 @@
 <script>
 
 var chan = Channel.build({window: window.parent, origin: "*", scope: "hub"});
-chan.bind("reverse", function(trans, s) {
-    return s.split("").reverse().join("");
+chan.bind("badge_put", function(trans, badge) {
+    try {
+        if (!localStorage.badges)
+            localStorage.badges = "{}";
+        var badges = JSON.parse(localStorage.badges);
+        badges[badge.badgeURL] = badge;
+        localStorage.badges = JSON.stringify(badges);
+        return true;
+    } catch (e) {
+        return false;
+    }
+});
+chan.bind("badge_get", function(trans, filter) {
+    alert("test");
+    if (!localStorage.badges)
+        return [];
+    filter = filter? filter : "";
+    alert("test test: " + localStorage.badges);
+    var badges = JSON.parse(localStorage.badges); 
+    return [i for each (i in badges) if (i.badgeURL.indexOf(filter) >= 0)];
 });
 
 </script>
