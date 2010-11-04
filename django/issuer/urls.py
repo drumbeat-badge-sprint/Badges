@@ -7,6 +7,7 @@ admin.autodiscover()
 media_url = settings.MEDIA_URL.lstrip('/').rstrip('/')
 
 urlpatterns = patterns('',
+    (r'', include('dashboard.urls')),
     (r'^openid/', include('openid_provider.urls')),
     (r'^accounts/', include('registration.urls')),
     (r'^admin/', include(admin.site.urls)),
