@@ -1,0 +1,22 @@
+<html>
+<head><script src="jschannel/src/jschannel.js"></script></head>
+<body>
+<iframe id="hubIframe" src="hub.html"></iframe>
+</body>
+<script>
+
+var chan = Channel.build({
+    window: document.getElementById("hubIframe").contentWindow,
+    origin: "*",
+    scope: "hub"
+});
+chan.call({
+    method: "reverse",
+    params: "hello world!",
+    success: function(v) {
+        alert(v);
+    }
+});
+
+</script>
+</html>
