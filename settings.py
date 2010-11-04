@@ -1,7 +1,7 @@
 # Django settings for badgeissuer project.
 import os
 
-ROOT = os.path.dirname(os.path.absname(__file__))
+ROOT = os.path.dirname(os.path.abspath(__file__))
 path = lambda *a: os.path.join(ROOT, *a)
 
 DEBUG = True
