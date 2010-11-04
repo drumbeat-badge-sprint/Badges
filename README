@@ -21,6 +21,8 @@ Key points:
   attributes/concepts which are nevertheless required to parse this particular
   badge instance.
 * issuer attr is the entity issuing the badge
+* badgeURL attr is a unique URL for this badge instance (which could be shared
+  if a group of people were all issued the same badge)
 * issuee attr is the person who owns (has been issued) the badge. All of the
   identities in the array are considered equivalent for verification purposes,
   but preference should be given to IDs appearing first.
