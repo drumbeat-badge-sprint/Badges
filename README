@@ -1,0 +1,31 @@
+Badge Format
+============
+
+Strawman example:
+
+{
+ "schema": "https://example.com/badge/1",
+ "mustSupport": [],
+
+ "title": "School of Webcraft Responder",
+ "description": "This badge is in recognition of the helpful responses you have provided to fellow members of the School of Webcraft.",
+ "timestamp": "1288882617",
+ "issuer": "https://badger.mozilla.com/",
+ "badgeURL": "https://badger.mozilla.com/badges/asdf1234",
+ "issuee": [{"type": "email", "id": "thunder@mozilla.com"},
+            {"type": "openid", "id": "https://id.sandmill.org/"}]
+}
+
+Key points:
+
+* schema attr is an opaque string that we can change to make
+  backwards-incompatible changes to the format.
+* mustSupport attr is an array of opaque strings which specify schema-optional
+  attributes/concepts which are nevertheless required to parse this particular
+  badge instance.
+* issuer attr is the entity issuing the badge
+* badgeURL attr is a unique URL for this badge instance (which could be shared
+  if a group of people were all issued the same badge)
+* issuee attr is the person who owns (has been issued) the badge. All of the
+  identities in the array are considered equivalent for verification purposes,
+  but preference should be given to IDs appearing first.
