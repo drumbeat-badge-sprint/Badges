@@ -7,6 +7,9 @@ Strawman example:
  "schema": "https://example.com/badge/1",
  "mustSupport": [],
 
+ "title": "School of Webcraft Responder",
+ "description": "This badge is in recognition of the helpful responses you have provided to fellow members of the School of Webcraft.",
+ "timestamp": "1288882617",
  "issuer": "https://badger.mozilla.com/",
  "badgeURL": "https://badger.mozilla.com/badges/asdf1234",
  "issuee": [{"type": "email", "id": "thunder@mozilla.com"},
