@@ -1,0 +1,3 @@
+[submodule "jschannel"]
+	path = hub/jschannel
+	url = git@github.com:mozilla/jschannel.git
