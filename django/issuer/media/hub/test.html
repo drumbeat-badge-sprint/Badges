@@ -1,0 +1,49 @@
+<html>
+<head><script src="/media/hub/jschannel/src/jschannel.js"></script></head>
+<body>
+<iframe id="hubIframe" src="hub.html"></iframe>
+<ul id="echoarea"/>
+</body>
+<script>
+
+function echo(s) {
+    document.getElementById("echoarea").innerHTML += "<li>" + s + "</li>";
+}
+
+echo("starting out");
+
+var hub = Channel.build({
+    window: document.getElementById("hubIframe").contentWindow,
+    origin: "*",
+    scope: "hub"
+});
+
+var sampleBadge = {
+ "schema": "https://example.com/badge/1",
+ "mustSupport": [],
+
+ "issuer": "https://badger.mozilla.com/",
+ "badgeURL": "https://badger.mozilla.com/badges/asdf1234",
+ "issuee": [{"type": "email", "id": "thunder@mozilla.com"},
+            {"type": "openid", "id": "https://id.sandmill.org/"}]
+};
+
+hub.call({
+    method: "badge_put",
+    params: sampleBadge,
+    success: function(v) {
+        if (v)
+            echo("badge added/refreshed into hub");
+    }
+});
+
+hub.call({
+    method: "badge_get",
+    params: "",
+    success: function(list) {
+        echo("got badges: " + JSON.stringify(list));
+    }
+});
+
+</script>
+</html>
