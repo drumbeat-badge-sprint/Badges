@@ -1,0 +1,257 @@
+/* @override http://127.0.0.1:8000/media/css/screen.css?v=1 */
+
+/* @group Basics */
+html{	
+	background: #f0f0f0;
+}
+body {
+    font: 16px/24px sans-serif;
+    display: block;
+    width: 1020px;
+    margin: 0 auto;
+	background: #fff;
+	position: relative;
+}
+body > * {
+	padding: 24px 40px; /*content width = 940px*/
+}
+p {
+	margin-bottom: 24px;
+}
+
+/* @group forms */
+form{
+	width: 480px;
+}
+legend {
+	display: block;
+	font-size: 36px;
+	font-weight: bold;
+	line-height: 36px;
+	padding-bottom: 24px;
+}
+legend .pester{
+	font-size: 14px;
+	font-weight: normal;
+}
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="password"],
+textarea,
+button,
+input[type="submit"],
+input[type="button"]{
+	width: 470px;
+	border: 2px solid #ddd;
+	background: #fafafa;
+	font-size: 13px;
+	line-height: 32px; height: 32px;
+	padding: 0 4px;
+	vertical-align: bottom;
+	font-size: 18px;
+}
+textarea {
+	height: 96px;
+}
+button,
+input[type="submit"],
+input[type="button"]{
+	display: block;
+	width: auto;
+	padding: 0 20px;
+	float: right;
+	background: #607890;
+	border: 2px solid #2d3d4c;
+	color: #fff;
+}
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover{
+	opacity: 0.8;	
+}
+button:focus,
+input:focus,
+textarea:focus {
+	background: #e5f0ff;
+	border-color: #bfd9ff;
+	color: #444;
+}
+input[name=openid_identifier],
+p.openid {
+    background: url(/media/images/openid_logo.gif) no-repeat 6px 50%;
+    padding-left: 26px;
+}
+form p{
+	margin-bottom: 12px;
+}
+label{
+	font-size: 20px;
+	line-height: 24px;
+	display: block;
+}
+
+/* @end */
+
+/* @group Navigation */
+
+nav ul{
+	padding: 0 10px; margin: 0 -10px 24px;
+	border-bottom: 1px solid #e0e0e0;
+}
+nav ul li{
+	display: inline-block;
+	opacity: 0.75;
+	background: #eee;
+	border:  1px solid #e0e0e0;
+	border-bottom: 0;
+	border-radius:20px 20px 0 0;
+
+}
+nav ul li.active,
+nav ul li:hover{
+	opacity: 1;
+}
+nav ul li a{
+	display: block;
+	padding: 0 20px;
+	line-height: 36px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+
+/* @end */
+
+
+
+/* @end */
+
+/* @group Layout */
+header{
+	background: #e0e0e0;
+	clear: both;
+}
+header h1{
+	background: url(../images/drumbeat_logo.png) no-repeat 0 0;
+	line-height: 72px; padding-left: 76px;
+	font-size: 36px;
+}
+header h1 a{
+	color: #444;
+	text-decoration: none;
+}
+header nav ul{
+	padding: 0 10px; margin: 0;
+	background: #fff;
+	float: left;	
+	position: absolute;
+	top: 36px; right: 40px;
+	border-radius:20px;
+	-moz-border-radius:20px;
+}
+header nav ul:after{content: "."; display: block; height: 0; clear: both; visibility: hidden;}
+header nav ul li{
+	display: inline-block;
+		border: none;
+	border-radius:0;
+	-moz-border-radius:0;
+	background: none;
+}
+header nav ul li a{
+	display: block;
+	padding: 0 10px;
+	line-height: 48px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+/* @end */
+
+/* @group Sections */
+
+/* @group Profile */
+
+html.profile.edit.info nav#profile-edit-nav li.info,
+html.profile.edit.image nav#profile-edit-nav li.image,
+html.profile.edit.phone nav#profile-edit-nav li.phone,
+html.profile.edit.links nav#profile-edit-nav li.links,
+html.profile.edit.skills nav#profile-edit-nav li.skills,
+html.profile.edit.interests nav#profile-edit-nav li.interests
+{
+	opacity: 1;
+	background: none;
+	border-bottom: 1px solid #fff;
+	margin-bottom: -1px;
+}
+/*html.profile.edit.info nav#profile-edit-nav li.edit-info a,
+html.profile.edit.image nav#profile-edit-nav li.image a,
+html.profile.edit.phone nav#profile-edit-nav li.phone a,
+html.profile.edit.links nav#profile-edit-nav li.links a,
+html.profile.edit.skills nav#profile-edit-nav li.skills,
+html.profile.edit.interests nav#profile-edit-nav li.interests {
+	background: none;
+	border-bottom: 1px solid #fff;
+	margin-bottom: -1px;
+}*/
+
+/* @end */
+
+/* @group Signin */
+html.signin #body{
+	width: 480px;
+	margin: auto;
+}
+/*html.signin #body input[type="text"],
+html.signin #body input[type="email"],
+html.signin #body input[type="url"],
+html.signin #body input[type="search"],
+html.signin #body input[type="password"],
+html.signin #body textarea {
+		width: 470px;
+}*/
+#forgot_password {
+	float: left;
+}
+
+/* @end */
+
+
+
+/* @end */
+
+
+
+
+
+
+
+div.errors {
+    color: #fff;
+    background-color: #900;
+    border: 1px solid red;
+    padding: 5px;
+    margin: 0px 5px 10px 5px;
+}
+
+div.messages {
+    background-color: #06c;
+    color: #fff;
+    border: 1px solid #000;
+    padding: 5px;
+    margin: 0px 5px 10px 5px;
+}
+
+ul.activityfeed {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+ul.activityfeed li {
+    padding: 20px 0px 20px 0px;
+    border-bottom: 1px solid #ccc;
+}
+
+div.status_update {
+    margin-bottom: 40px;
+}
