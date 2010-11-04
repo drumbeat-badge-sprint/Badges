@@ -7,8 +7,10 @@
   <link rel="Shortcut Icon" href="{{MEDIA_URL}}images/favicon.png">
   <link rel="stylesheet" href="{{MEDIA_URL}}css/base.css?v=1">
   <link rel="stylesheet" href="{{MEDIA_URL}}css/screen.css?v=1" media="screen" />
-  <!-- bring on the html5 -->
-  <script src="{{ MEDIA_URL }}js/modernizr-1.5.min.js"></script>
+
+  <script src="{{ MEDIA_URL }}js/jquery-1.4.2.min.js"></script>
+  <script src="{{ MEDIA_URL }}js/plugins.js?v=1"></script><!-- third party -->
+  <script src="{{ MEDIA_URL }}js/script.js?v=1"></script><!-- first party -->
   {% block links %}{% endblock %}
   {% block extrahead %}{% endblock %}
 </head>
@@ -25,6 +27,7 @@
   <nav id="site">
     <ul>
       <li><a href="">{{ _('About') }}</a></li>
+      <li><a href="/badges/">Badges</a></li>
       <li><a href="">{{ _('Projects') }}</a></li>
       <li><a href="">{{ _('People') }}</a></li>
       <li><a href="#">{{ _('Events') }}</a></li>
@@ -43,11 +46,6 @@
   {% endif %}
   {% block content %}{% endblock %}
   </div> <!-- #body -->
-<script src="{{ MEDIA_URL }}js/jquery-1.4.2.min.js"></script>
-<script src="{{ MEDIA_URL }}js/plugins.js?v=1"></script><!-- third party -->
-<script src="{{ MEDIA_URL }}js/script.js?v=1"></script><!-- first party -->
-<!--[if lt IE 7 ]>
-<script src="js/dd_belatedpng.js?v=1"></script>
-<![endif]-->
+
 </body>
 </html>

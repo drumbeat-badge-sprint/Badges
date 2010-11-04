@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Badges</h2>
+{% for badge in badges %}
+<p>
+  <strong>Badge Name:</strong> {{ badge.title }}
+  <a id="claim_{{ badge.id }}" href="#">Claim</a>
+  <form id="claim_form_{{ badge.id }}" action="/badges/claim/" method="post">
+    <input type="hidden" name="badge_id" value="{{ badge.id }}" />
+  </form>
+  <script type="text/javascript">
+    $('#claim_{{ badge.id }}').click(function() {
+        $('#claim_form_{{ badge.id }}').submit();
+        return false;
+    });
+  </script>
+</p>
+{% endfor %}
+<h2>My Badges</h2>
+<ul>
+{% for claim in claimed %}
+  <li>{{ claim.badge.title }} claimed on {{ claim.badge.timestamp }}</li>
+{% endfor %}
+</ul>
+{% endblock %}
