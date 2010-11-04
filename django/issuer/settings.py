@@ -1,4 +1,4 @@
-# Django settings for badgeissuer project.
+# Django settings for issuer project.
 import os
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -75,7 +75,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'badgeissuer.urls'
+ROOT_URLCONF = 'issuer.urls'
 
 TEMPLATE_DIRS = (
     path('templates'),
