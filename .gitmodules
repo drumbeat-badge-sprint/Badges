@@ -1,3 +1,3 @@
-[submodule "jschannel"]
+[submodule "hub/jschannel"]
 	path = hub/jschannel
-	url = git@github.com:mozilla/jschannel.git
+	url = https://github.com/mozilla/jschannel.git
