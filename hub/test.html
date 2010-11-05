@@ -1,7 +1,7 @@
 <html>
-<head><script src="jschannel/src/jschannel.js"></script></head>
+<head><script src="src/jschannel.js"></script>
+<script src="src/hub.js"></script></head>
 <body>
-<iframe id="hubIframe" src="hub.html"></iframe>
 <ul id="echoarea"/>
 </body>
 <script>
@@ -11,12 +11,6 @@ function echo(s) {
 }
 
 echo("starting out");
-
-var hub = Channel.build({
-    window: document.getElementById("hubIframe").contentWindow,
-    origin: "*",
-    scope: "hub"
-});
 
 var sampleBadge = {
  "schema": "https://example.com/badge/1",
@@ -28,20 +22,14 @@ var sampleBadge = {
             {"type": "openid", "id": "https://id.sandmill.org/"}]
 };
 
-hub.call({
-    method: "badge_put",
-    params: sampleBadge,
-    success: function(v) {
-        if (v)
-            echo("badge added/refreshed into hub");
-    }
-});
-
-hub.call({
-    method: "badge_get",
-    params: "",
-    success: function(list) {
-        echo("got badges: " + JSON.stringify(list));
+Hub.saveBadge(sampleBadge, function(success) {
+    if (success) {
+        echo("badge added/refreshed into hub");
+        Hub.getBadges("", function(list) {
+            echo("got badges: " + JSON.stringify(list));
+        });
+    } else {
+        echo("oops, could not add badge to hub");
     }
 });
 
