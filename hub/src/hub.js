@@ -17,6 +17,9 @@
         },
         getBadges: function(filter, onsuccess) {
             s_channel.call({method: "badge_get", params: filter, success: onsuccess});
-        }
+        },
+        _clear: function(onsuccess) {
+	    s_channel.call({method: "badge_clear", params: {}, success: onsuccess});
+	}
     }
 })();
