@@ -1,10 +1,14 @@
 {% extends "base.html" %}
+{# this template is temporarily hacked for specific demoing use for giving Mark Surman a badge #}
+
 {% block content %}
-<h2>Badges</h2>
+<h2>Congratulations {{ user.first_name }} {{ user.last_name }}</h2>
+
 {% for badge in badges %}
 <p>
-  <strong>Badge Name:</strong> {{ badge.title }}
-  <a id="claim_{{ badge.id }}" href="#">Claim</a>
+  <strong>You have been awarded:</strong> <h1>{{ badge.title }}</h1>
+  
+  <a id="claim_{{ badge.id }}" href="#">Accept</a>
   <form id="claim_form_{{ badge.id }}" action="/badges/claim/" method="post">
     <input type="hidden" name="badge_id" value="{{ badge.id }}" />
   </form>
@@ -19,9 +23,11 @@
   <script src="/media/hub/jschannel/src/jschannel.js"></script>
   <iframe id="hubIframe" src="http://localhost:8000/media/hub/hub.html"></iframe>
 
+
+
+<!--
 <h2>My Badges</h2>
 <ul>
-
 {% for claim in claimed %}
   <li>{{ claim.badge.title }} claimed on {{ claim.badge.timestamp }} (<a href="#" id="remove_{{ claim.id }}">Give Back</a>)</li>
   <form id="drop_claim_{{ claim.id }}" method="post" action="/badges/drop/">
@@ -51,6 +57,8 @@
     </script>
 {% endfor %}
 </ul>
+-->
+
 {% endblock %}
 
 
