@@ -9,7 +9,7 @@ body {
     display: block;
     width: 1020px;
     margin: 0 auto;
-	background: #fff;
+	background: #f0f0f0;
 	position: relative;
 	
 	text-align: center;
@@ -134,6 +134,9 @@ nav ul li a{
 #header{
 	background: #e0e0e0;
 	clear: both;
+	border:1px solid #ccc;
+  -moz-border-radius:6px;
+  margin-top: 10px; 
 }
 #header h1{
 	background: url(../images/drumbeat_logo.png) no-repeat 0 0;
@@ -171,7 +174,16 @@ nav ul li a{
 }
 
 
-#body h2 {font-size: 3em; margin: 20px 0px;}
+#body h2 {font-size: 3em; margin: 20px 0px;
+
+}
+
+#body {
+  	background: #e0e0e0;
+	clear: both;
+	border:1px solid #ccc;
+  -moz-border-radius:6px;
+  margin-top: 10px; }
 
 
 /* @end */
@@ -230,10 +242,6 @@ html.signin #body textarea {
 
 
 
-
-
-
-
 div.errors {
     color: #fff;
     background-color: #900;
@@ -263,3 +271,24 @@ ul.activityfeed li {
 div.status_update {
     margin-bottom: 40px;
 }
+
+
+
+/* badge styling */
+.badge {
+    width:400px;
+    display: block;
+    text-align: left;
+    padding:10px;
+
+    border:1px solid #ccc;
+    -moz-border-radius:6px;
+    background:-moz-linear-gradient(top, #fff 20%, #ddd 100%);
+    -moz-box-shadow: 0px 2px 0 #666;
+    margin: 8px auto;
+  }
+  
+    .badge .info {
+    float: left;
+    width: 250px;
+  }
