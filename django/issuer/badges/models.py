@@ -4,6 +4,11 @@ from django.db import models
 
 from openid_provider.models import OpenID
 
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
 class Badge(models.Model):
     title = models.CharField(max_length=125)
     description = models.TextField()
@@ -12,12 +17,14 @@ class Badge(models.Model):
     def get_absolute_url(self):
         return '/badges/%d' % (self.pk,)
 
-
 class BadgeClaim(models.Model):
     user = models.ForeignKey(User)
     badge = models.ForeignKey(Badge)
 
-    def serialized(self, request):
+    def json(self):
+        return json.dumps(self.serialized())
+
+    def serialized(self):
         openid = OpenID.objects.get(user=self.user)
         return {
             'schema': 'http://example.org/badge/%d' % (self.badge.pk,),
@@ -26,11 +33,11 @@ class BadgeClaim(models.Model):
             'description': self.badge.description,
             'timestamp': '123456',
             'issuer': 'http://www.drumbeat.org/',
-            'badgeURL': self.badge.get_absolute_url(),
+            'badgeURL': 'http://localhost:8000' + self.badge.get_absolute_url(),
             'issuee': [
                 {
                     'type': 'openid',
-                    'id': request.build_absolute_uri('/openid/%s/' % (openid.openid,)),
+                    'id': 'http://localhost:8000/openid/%s/' % (openid.openid,),
                 },
                 {
                     'type': 'email',

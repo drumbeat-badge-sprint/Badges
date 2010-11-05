@@ -7,7 +7,10 @@ from django.template import RequestContext
 from badges.models import Badge, BadgeClaim
 from openid_provider.models import OpenID
 
-import json
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 @login_required
 def index(request):
@@ -28,15 +31,22 @@ def claim(request):
     claim.save()
     return HttpResponseRedirect('/badges/')
 
+def drop(request):
+    if request.method == "GET":
+        return HttpResponseRedirect('/badges/')
+    claim = BadgeClaim.objects.get(id=int(request.POST['claim_id']))
+    claim.delete()
+    return HttpResponseRedirect('/badges/')
+
 def badge(request, badge_id):
     badge = get_object_or_404(Badge, id=badge_id)
-    return HttpResponse('hi')
+    return HttpResponse(badge.title)
 
 def badges(request, username):
     user = get_object_or_404(User, username=username)
     claims = BadgeClaim.objects.filter(user=user)
     badges = []
     for claim in claims:
-        badges.append(claim.serialized(request))
+        badges.append(claim.serialized())
     return HttpResponse(json.dumps(badges), mimetype='application/json')
             
