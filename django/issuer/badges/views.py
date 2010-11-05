@@ -7,7 +7,10 @@ from django.template import RequestContext
 from badges.models import Badge, BadgeClaim
 from openid_provider.models import OpenID
 
-import json
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 @login_required
 def index(request):

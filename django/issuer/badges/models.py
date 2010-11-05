@@ -4,7 +4,10 @@ from django.db import models
 
 from openid_provider.models import OpenID
 
-import json
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 class Badge(models.Model):
     title = models.CharField(max_length=125)
@@ -13,7 +16,6 @@ class Badge(models.Model):
 
     def get_absolute_url(self):
         return '/badges/%d' % (self.pk,)
-
 
 class BadgeClaim(models.Model):
     user = models.ForeignKey(User)
