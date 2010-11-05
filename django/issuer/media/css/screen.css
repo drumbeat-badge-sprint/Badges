@@ -183,7 +183,10 @@ nav ul li a{
 	clear: both;
 	border:1px solid #ccc;
   -moz-border-radius:6px;
-  margin-top: 10px; }
+
+margin-bottom:20px;
+margin-top:10px;
+min-height:180px;}
 
 
 /* @end */
