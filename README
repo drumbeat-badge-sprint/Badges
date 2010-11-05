@@ -6,26 +6,35 @@ Strawman example:
 {
  "schema": "https://example.com/badge/1",
  "mustSupport": [],
-
  "title": "School of Webcraft Responder",
  "description": "This badge is in recognition of the helpful responses you have provided to fellow members of the School of Webcraft.",
  "timestamp": "1288882617",
- "issuer": "https://badger.mozilla.com/",
+ "expires": "8462729988",
  "badgeURL": "https://badger.mozilla.com/badges/asdf1234",
+ "issuer": "https://badger.mozilla.com/",
  "issuee": [{"type": "email", "id": "thunder@mozilla.com"},
-            {"type": "openid", "id": "https://id.sandmill.org/"}]
+            {"type": "openid", "id": "https://id.sandmill.org/"}],
+  "onclick": {"action": "iframe", "url": "http://cc.org/embed/blah.html"}
 }
 
 Key points:
 
-* schema attr is an opaque string that we can change to make
-  backwards-incompatible changes to the format.
-* mustSupport attr is an array of opaque strings which specify schema-optional
-  attributes/concepts which are nevertheless required to parse this particular
-  badge instance.
-* issuer attr is the entity issuing the badge
-* badgeURL attr is a unique URL for this badge instance (which could be shared
-  if a group of people were all issued the same badge)
-* issuee attr is the person who owns (has been issued) the badge. All of the
-  identities in the array are considered equivalent for verification purposes,
-  but preference should be given to IDs appearing first.
+* schema identifies this as a badge
+* mustSupport is used for versioning. It is an array of opaque strings which
+  specify required support for attributes/concepts by consumers of this badge
+  (if not understood the badge should be ignored)
+* issuer is the entity issuing the badge, issuee is who it is being issued to.
+  They could be the same.
+* badgeURL attr is a unique URL for this badge instance. It could be shared
+  between multiple issuees--for example, all the members of the winning team of
+  a championship could be issued the same badge
+* multiple issuees are possible to allow the badge to still be somewhat usable
+  in the event that a federated id provider goes down. this needs some more
+  thought--that would allow for verification that the issuee exists, but not
+  that he/she was actually issued a badge [fixme]
+* expires could be used to implement dynamic badges, by requiring a refresh of
+  the badge. it could also be used to represent time-limited knowledge--e.g. you
+  know html5 really well now, but in 3 years maybe that's not true
+* onclick is so we can specify things like "open an iframe to X" or "go to X
+  URL" when clicked. [needs work]
+  
