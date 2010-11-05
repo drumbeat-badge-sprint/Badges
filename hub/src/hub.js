@@ -4,7 +4,7 @@
 
 ;Hub = (function() {
     var iframe = document.createElement("iframe");
-    iframe.src = "hub.html";
+    iframe.src = "http://hub/hub.html";
     document.firstChild.appendChild(iframe);
     var s_channel = Channel.build({
         window: iframe.contentWindow,
