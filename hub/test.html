@@ -1,5 +1,6 @@
 <html>
-<head><script src="src/hub.js"></script></head>
+<head><script src="src/jschannel.js"></script>
+<script src="src/hub.js"></script></head>
 <body>
 <ul id="echoarea"/>
 </body>
@@ -27,6 +28,8 @@ Hub.saveBadge(sampleBadge, function(success) {
         Hub.getBadges("", function(list) {
             echo("got badges: " + JSON.stringify(list));
         });
+    } else {
+        echo("oops, could not add badge to hub");
     }
 });
 
