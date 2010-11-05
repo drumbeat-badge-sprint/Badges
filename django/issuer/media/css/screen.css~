@@ -11,9 +11,6 @@ body {
     margin: 0 auto;
 	background: #fff;
 	position: relative;
-	
-	text-align: center;
-	
 }
 body > * {
 	padding: 24px 40px; /*content width = 940px*/
@@ -131,21 +128,20 @@ nav ul li a{
 /* @end */
 
 /* @group Layout */
-#header{
+header{
 	background: #e0e0e0;
 	clear: both;
 }
-#header h1{
+header h1{
 	background: url(../images/drumbeat_logo.png) no-repeat 0 0;
-	line-height: 72px; padding-left: 86px;
+	line-height: 72px; padding-left: 76px;
 	font-size: 36px;
-	text-align: left;
 }
-#header h1 a{
+header h1 a{
 	color: #444;
 	text-decoration: none;
 }
-#header nav ul{
+header nav ul{
 	padding: 0 10px; margin: 0;
 	background: #fff;
 	float: left;	
@@ -154,25 +150,21 @@ nav ul li a{
 	border-radius:20px;
 	-moz-border-radius:20px;
 }
-#header nav ul:after{content: "."; display: block; height: 0; clear: both; visibility: hidden;}
-#header nav ul li{
+header nav ul:after{content: "."; display: block; height: 0; clear: both; visibility: hidden;}
+header nav ul li{
 	display: inline-block;
 		border: none;
 	border-radius:0;
 	-moz-border-radius:0;
 	background: none;
 }
-#header nav ul li a{
+header nav ul li a{
 	display: block;
 	padding: 0 10px;
 	line-height: 48px;
 	font-weight: bold;
 	text-decoration: none;
 }
-
-
-#body h2 {font-size: 3em; margin: 20px 0px;}
-
 
 /* @end */
 
