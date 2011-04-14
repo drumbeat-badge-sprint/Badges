@@ -1,2 +1,5 @@
 *.komodoproject
 *.pyc
+.project
+.pydevproject
+localsettings.py
