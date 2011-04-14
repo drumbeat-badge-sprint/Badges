@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.db import models
 
 from openid_provider.models import OpenID
+import settings
+import calendar
 
 try:
     import json
@@ -17,9 +19,14 @@ class Badge(models.Model):
     def get_absolute_url(self):
         return '/badges/%d' % (self.pk,)
 
+class BadgeIssue(models.Model):
+    user = models.ForeignKey(User,related_name="issues")
+    badge = models.ForeignKey(Badge,related_name="issues")
+    timestamp = models.DateTimeField(auto_now_add=True)
+    issuer = models.URLField()
+
 class BadgeClaim(models.Model):
-    user = models.ForeignKey(User)
-    badge = models.ForeignKey(Badge)
+    issue = models.ForeignKey(BadgeIssue,related_name="claims")
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def json(self):
@@ -28,25 +35,26 @@ class BadgeClaim(models.Model):
     def serialized(self):
         openid = OpenID.objects.get(user=self.user)
         return {
-            'schema': 'http://example.org/badge/%d' % (self.badge.pk,),
+            'schema': 'http://example.org/badge/%d' % (self.issue.badge.pk,),
             'mustSupport': [],
-            'title': self.badge.title,
-            'description': self.badge.description,
-            'timestamp': '123456',
-            'issuer': 'http://www.drumbeat.org/',
-            'badgeURL': 'http://localhost:8000' + self.badge.get_absolute_url(),
+            'title': self.issue.badge.title,
+            'description': self.issue.badge.description,
+            'timestamp': calendar.timegm(self.timestamp.timetuple()),
+            'issuer': self.issue.issuer,
+            'badgeURL': settings.HOST_SERVER + self.issue.badge.get_absolute_url(),
             'issuee': [
                 {
                     'type': 'openid',
-                    'id': 'http://localhost:8000/openid/%s/' % (openid.openid,),
+                    'id': settings.HOST_SERVER + '/openid/%s/' % (openid.openid,),
                 },
                 {
                     'type': 'email',
-                    'id': self.user.email
+                    'id': self.issue.user.email
                 }
             ],
         }
 
 
 admin.site.register(Badge)
+admin.site.register(BadgeIssue)
 admin.site.register(BadgeClaim)

@@ -97,3 +97,10 @@ INSTALLED_APPS = (
 
 ACCOUNT_ACTIVATION_DAYS = 7
 LOGIN_REDIRECT_URL = '/'
+
+HOST_SERVER = "http://localhost:8000"
+
+try:
+    from localsettings import *
+except ImportError:
+    pass

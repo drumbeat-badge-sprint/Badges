@@ -1,9 +1,11 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
-    (r'^$', 'badges.views.index'),
-    (r'^(?P<badge_id>[\d]+)/$', 'badges.views.badge'),
-    (r'^claim/$', 'badges.views.claim'),
-    (r'^drop/$', 'badges.views.drop'),
-    (r'^(?P<username>[\w-]+)/$', 'badges.views.badges'),          
+    url(r'^$', 'badges.views.index',name="badges_index"),
+    url(r'^(?P<badge_id>[\d]+)/$', 'badges.views.badge',name="badges_badge"),
+    url(r'^add/$', 'badges.views.badge',name="badges_badge"),
+    url(r'^(?P<badge_id>[\d]+)/edit/$', 'badges.views.badge',name="badges_badge"),
+    url(r'^claim/$', 'badges.views.claim',name="badges_claim"),
+    url(r'^drop/$', 'badges.views.drop',name="badges_drop"),
+    url(r'^(?P<username>[\w-]+)/$', 'badges.views.badges',name="badges_badges_user"),          
 )
