@@ -5,15 +5,27 @@ from django.db import models
 from openid_provider.models import OpenID
 import settings
 import calendar
+import datetime
 
 try:
     import json
 except ImportError:
     import simplejson as json
+    
+class Issuer(models.Model):
+    users = models.ManyToManyField(User,related_name="issuers")
+    name = models.CharField(max_length=125)
+    url = models.URLField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    
+    def __unicode__(self):
+        return self.name
 
 class Badge(models.Model):
     title = models.CharField(max_length=125)
     description = models.TextField()
+    image = models.ImageField(upload_to="badges/",null=True,blank=True)
+    imageURL = models.URLField(null=True,blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def get_absolute_url(self):
@@ -26,7 +38,8 @@ class BadgeIssue(models.Model):
     user = models.ForeignKey(User,related_name="issues")
     badge = models.ForeignKey(Badge,related_name="issues")
     timestamp = models.DateTimeField(auto_now_add=True)
-    issuer = models.URLField()
+    expires = models.DateTimeField(default=datetime.datetime(year=2100,month=12,day=31))
+    issuer = models.ForeignKey(Issuer,related_name="issues")
     accepted = models.BooleanField(default=False)
 
     def __unicode__(self):
@@ -41,13 +54,21 @@ class BadgeClaim(models.Model):
 
     def serialized(self):
         openid = OpenID.objects.get(user=self.issue.user)
+        
+        if self.issue.issuer.image is not None:
+            image = self.issue.issuer.image.url
+        else:
+            image = self.issue.issuer.imageUrl
+            
         return {
             'schema': 'http://example.org/badge/%d' % (self.issue.badge.pk,),
             'mustSupport': [],
             'title': self.issue.badge.title,
             'description': self.issue.badge.description,
             'timestamp': calendar.timegm(self.timestamp.timetuple()),
-            'issuer': self.issue.issuer,
+            'expires': calendar.timegm(self.issue.expires.timetuple()),
+            'issuer': self.issue.issuer.url,
+            'issueName': self.issue.issuer.name,
             'badgeURL': settings.HOST_SERVER + self.issue.badge.get_absolute_url(),
             'issuee': [
                 {
@@ -64,8 +85,3 @@ class BadgeClaim(models.Model):
     def __unicode__(self):
         return "%s accepted %s from %s" % (self.issue.user, self.issue.badge, self.issue.issuer )
 
-
-
-admin.site.register(Badge)
-admin.site.register(BadgeIssue)
-admin.site.register(BadgeClaim)

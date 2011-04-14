@@ -26,7 +26,7 @@ def issue(request):
         return HttpResponseRedirect(reverse("badges_index"))
     badge = Badge.objects.get(id=request.POST['badge_id'])
     recipient = User.objects.get(id=request.POST['user_id'])
-    issue = BadgeIssue(badge=badge,user=recipient,issuer=request.POST['user_id'])
+    issue = BadgeIssue(badge=badge,user=recipient,issuer=request.POST['issuer'])
     
     return HttpResponseRedirect(reverse("badges_index"))
 
