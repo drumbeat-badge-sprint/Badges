@@ -18,12 +18,19 @@ class Badge(models.Model):
 
     def get_absolute_url(self):
         return '/badges/%d' % (self.pk,)
+    
+    def __unicode__(self):
+        return self.title
 
 class BadgeIssue(models.Model):
     user = models.ForeignKey(User,related_name="issues")
     badge = models.ForeignKey(Badge,related_name="issues")
     timestamp = models.DateTimeField(auto_now_add=True)
     issuer = models.URLField()
+    accepted = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return "%s issued %s to %s" % (self.issuer, self.badge, self.user)
 
 class BadgeClaim(models.Model):
     issue = models.ForeignKey(BadgeIssue,related_name="claims")
@@ -33,7 +40,7 @@ class BadgeClaim(models.Model):
         return json.dumps(self.serialized())
 
     def serialized(self):
-        openid = OpenID.objects.get(user=self.user)
+        openid = OpenID.objects.get(user=self.issue.user)
         return {
             'schema': 'http://example.org/badge/%d' % (self.issue.badge.pk,),
             'mustSupport': [],
@@ -53,6 +60,10 @@ class BadgeClaim(models.Model):
                 }
             ],
         }
+
+    def __unicode__(self):
+        return "%s accepted %s from %s" % (self.issue.user, self.issue.badge, self.issue.issuer )
+
 
 
 admin.site.register(Badge)

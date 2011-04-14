@@ -4,7 +4,7 @@
 {% block content %}
 <h2>Congratulations {{ user.first_name }} {{ user.last_name }}</h2>
 
-{% for badge in badges %}
+{% for issue in issues %}
 <p>
 
 
@@ -17,19 +17,19 @@
     </div>
     
     <div class='info'>
-        <h3 class='title'>{{ badge.title }}</h3>    
+        <h3 class='title'>{{ issue.badge.title }}</h3>    
         <h4 class='issuer'><a href='#' title=''>Mozilla Drumbeat Festival 2010</a></h4>
     </div>
 </div>
 <br />
 
-  <a id="claim_{{ badge.id }}" href="#">Accept</a>
-  <form id="claim_form_{{ badge.id }}" action="/badges/claim/" method="post">
-    <input type="hidden" name="badge_id" value="{{ badge.id }}" />
+  <a id="claim_{{ issue.badge.id }}" href="#">Accept</a>
+  <form id="claim_form_{{ issue.badge.id }}" action="{% url badges_claim %}" method="post">
+    <input type="hidden" name="issue_id" value="{{ issue.id }}" />
   </form>
   <script type="text/javascript">
-    $('#claim_{{ badge.id }}').click(function() {
-        $('#claim_form_{{ badge.id }}').submit();
+    $('#claim_{{ issue.badge.id }}').click(function() {
+        $('#claim_form_{{ issue.badge.id }}').submit();
         return false;
     });
   </script>
@@ -43,7 +43,7 @@
 <h2>My Badges</h2>
 <ul>
 {% for claim in claimed %}
-  <li>{{ claim.badge.title }} claimed on {{ claim.timestamp }} (<a href="#" id="remove_{{ claim.id }}">Give Back</a>)</li>
+  <li>{{ claim.issue.badge.title }} claimed on {{ claim.timestamp }} (<a href="#" id="remove_{{ claim.id }}">Give Back</a>)</li>
   <form id="drop_claim_{{ claim.id }}" method="post" action="/badges/drop/">
     <input type="hidden" name="claim_id" value="{{ claim.id }}">
   </form>

@@ -16,7 +16,7 @@ except ImportError:
 @login_required
 def index(request):
     return render_to_response('badges/index.html', {
-        'badges': Badge.objects.all(),
+        'issues': BadgeIssue.objects.filter(user=request.user,accepted=False),
         'claimed': BadgeClaim.objects.filter(issue__user=request.user),
     }, context_instance=RequestContext(request))
 
@@ -34,14 +34,11 @@ def issue(request):
 def claim(request):
     if request.method == "GET":
         return HttpResponseRedirect(reverse("badges_index"))
-    issues = BadgeIssue.objects.filter(badge__id=int(request.POST['badge_id']),user=request.user)
+    issue = get_object_or_404(BadgeIssue,id=int(request.POST['issue_id']),user=request.user)
     
-    if issues.count() > 0:            
-        claim = BadgeClaim(
-            user=request.user,
-            badge=issues[0].badge
-        )
-        claim.save()
+    claim = BadgeClaim.objects.create(issue=issue)
+    issue.accepted = True
+    issue.save()
     return HttpResponseRedirect(reverse("badges_index"))
 
 def drop(request):
@@ -57,7 +54,7 @@ def badge(request, badge_id):
 
 def badges(request, username):
     user = get_object_or_404(User, username=username)
-    claims = BadgeClaim.objects.filter(user=user)
+    claims = BadgeClaim.objects.filter(issue__user=user)
     badges = []
     for claim in claims:
         badges.append(claim.serialized())
