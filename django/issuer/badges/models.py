@@ -20,6 +20,7 @@ class Badge(models.Model):
 class BadgeClaim(models.Model):
     user = models.ForeignKey(User)
     badge = models.ForeignKey(Badge)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def json(self):
         return json.dumps(self.serialized())

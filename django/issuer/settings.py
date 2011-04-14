@@ -90,6 +90,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'openid_provider',
     'registration',
+    'south',
     'dashboard',
     'badges',
 )

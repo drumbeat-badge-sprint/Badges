@@ -36,15 +36,14 @@
 </p>
 {% endfor %}
   <script src="/media/hub/jschannel/src/jschannel.js"></script>
-  <iframe id="hubIframe" src="http://localhost:8000/media/hub/hub.html"></iframe>
+  <iframe id="hubIframe" src="http://localhost:5555/media/hub/hub.html"></iframe>
 
 
 
-<!--
 <h2>My Badges</h2>
 <ul>
 {% for claim in claimed %}
-  <li>{{ claim.badge.title }} claimed on {{ claim.badge.timestamp }} (<a href="#" id="remove_{{ claim.id }}">Give Back</a>)</li>
+  <li>{{ claim.badge.title }} claimed on {{ claim.timestamp }} (<a href="#" id="remove_{{ claim.id }}">Give Back</a>)</li>
   <form id="drop_claim_{{ claim.id }}" method="post" action="/badges/drop/">
     <input type="hidden" name="claim_id" value="{{ claim.id }}">
   </form>
@@ -72,7 +71,6 @@
     </script>
 {% endfor %}
 </ul>
--->
 
 {% endblock %}
 
