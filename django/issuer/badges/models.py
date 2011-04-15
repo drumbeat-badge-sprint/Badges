@@ -35,6 +35,28 @@ class Badge(models.Model):
     def __unicode__(self):
         return self.title
 
+class BadgeRequest(models.Model):
+    """
+    BadgeIssue represents an attempt by an Issuer to grant a user a badge.  
+    If the user accepts, the BadgeIssue is marked as accepted and a BadgeClaim is created.
+    """
+    user = models.ForeignKey(User,related_name="requests")
+    badge = models.ForeignKey(Badge,related_name="requests")
+    timestamp = models.DateTimeField(auto_now_add=True)
+    expires = models.DateTimeField(default=datetime.datetime(year=2100,month=12,day=31))
+    issuer = models.ForeignKey(Issuer,related_name="requests")
+    evidence = models.TextField(blank=True)
+    evidenceURL = models.URLField(blank=True,null=True)
+
+    def create_issue(self):
+        return BadgeIssue.objects.create(user=self.user,
+                                         badge=self.badge,
+                                         request=self,
+                                         issuer=self.issuer)
+
+    def __unicode__(self):
+        return "%s requested %s from %s" % (self.user, self.badge, self.issuer )
+
 class BadgeIssue(models.Model):
     """
     BadgeIssue represents an attempt by an Issuer to grant a user a badge.  
@@ -42,6 +64,7 @@ class BadgeIssue(models.Model):
     """
     user = models.ForeignKey(User,related_name="issues")
     badge = models.ForeignKey(Badge,related_name="issues")
+    request = models.OneToOneField(BadgeRequest,related_name="issue",null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     expires = models.DateTimeField(default=datetime.datetime(year=2100,month=12,day=31))
     issuer = models.ForeignKey(Issuer,related_name="issues")
