@@ -86,6 +86,7 @@ class BadgeIssue(models.Model):
             'issuerName': self.issuer.name,
             'imageURL': image_url,
             'issuee': issuee,
+            'accepted': self.accepted,
         }
         
     def __unicode__(self):

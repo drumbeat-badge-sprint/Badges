@@ -16,6 +16,7 @@ Strawman example:
     "imageURL": "https://badger.mozilla.com/badges/asdf1234/badge.jpg",
     "issuee": [{"type": "email", "id": "thunder@mozilla.com"},
                {"type": "openid", "id": "https://id.sandmill.org/"}],
+    "accepted": true,
     "onclick": {"action": "iframe", "url": "http://cc.org/embed/blah.html"}
 }
 
@@ -37,6 +38,8 @@ Key points:
 * expires could be used to implement dynamic badges, by requiring a refresh of
   the badge. it could also be used to represent time-limited knowledge--e.g. you
   know html5 really well now, but in 3 years maybe that's not true
+* accepted could help distinguish between when a user has been offered a badge
+  from the issuer and when the user has actually accepted that badge.
 * onclick is so we can specify things like "open an iframe to X" or "go to X
   URL" when clicked. [needs work]
   
