@@ -36,6 +36,10 @@ class Badge(models.Model):
         return self.title
 
 class BadgeIssue(models.Model):
+    """
+    BadgeIssue represents an attempt by an Issuer to grant a user a badge.  
+    If the user accepts, the BadgeIssue is marked as accepted and a BadgeClaim is created.
+    """
     user = models.ForeignKey(User,related_name="issues")
     badge = models.ForeignKey(Badge,related_name="issues")
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -43,8 +47,51 @@ class BadgeIssue(models.Model):
     issuer = models.ForeignKey(Issuer,related_name="issues")
     accepted = models.BooleanField(default=False)
 
+    def json(self):
+        return json.dumps(self.serialized())
+
+    def serialized(self):
+        issuee = [
+                {
+                    'type': 'email',
+                    'id': self.user.email
+                }
+                ]
+        
+        try:
+            openid = OpenID.objects.get(user=self.user)
+            issuee.append({
+                                'type': 'openid',
+                                'id': settings.HOST_SERVER + '/openid/%s/' % (openid.openid,),
+                            })
+                
+        except OpenID.DoesNotExist:
+            openid = None
+            
+        
+        if self.badge.image.name is not None:
+            image_url = self.badge.image.url
+        else:
+            image_url = self.badge.imageURL
+            
+        return {
+            'schema': 'http://example.org/badge/%d' % (self.badge.pk,),
+            'mustSupport': [],
+            'title': self.badge.title,
+            'description': self.badge.description,
+            'timestamp': calendar.timegm(self.timestamp.timetuple()),
+            'expires': calendar.timegm(self.expires.timetuple()),
+            'badgeURL': settings.HOST_SERVER + self.badge.get_absolute_url(),
+            'issuer': self.issuer.url,
+            'issuerName': self.issuer.name,
+            'imageURL': image_url,
+            'issuee': issuee,
+        }
+        
     def __unicode__(self):
         return "%s issued %s to %s" % (self.issuer, self.badge, self.user)
+
+
 
 class BadgeClaim(models.Model):
     issue = models.ForeignKey(BadgeIssue,related_name="claims")
@@ -73,13 +120,9 @@ class BadgeClaim(models.Model):
             
         
         if self.issue.badge.image.name is not None:
-            name = self.issue.badge.image.name
-            image = self.issue.badge.image
             image_url = self.issue.badge.image.url
         else:
             image_url = self.issue.badge.imageURL
-            
-        s = settings
             
         return {
             'schema': 'http://example.org/badge/%d' % (self.issue.badge.pk,),

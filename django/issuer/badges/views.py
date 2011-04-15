@@ -60,3 +60,11 @@ def badges(request, username):
         badges.append(claim.serialized())
     return HttpResponse(json.dumps(badges), mimetype='application/json')
             
+def issues(request, username):
+    user = get_object_or_404(User, username=username)
+    issues = BadgeIssue.objects.filter(user=user,accepted=False)
+    badges = []
+    for issue in issues:
+        badges.append(issue.serialized())
+    return HttpResponse(json.dumps(badges), mimetype='application/json')
+            

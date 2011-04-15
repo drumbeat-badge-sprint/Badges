@@ -8,4 +8,6 @@ urlpatterns = patterns('',
     url(r'^claim/$', 'badges.views.claim',name="badges_claim"),
     url(r'^drop/$', 'badges.views.drop',name="badges_drop"),
     url(r'^(?P<username>[\w-]+)/$', 'badges.views.badges',name="badges_badges_user"),          
+    url(r'^(?P<username>[\w-]+)/badges/$', 'badges.views.badges',name="badges_badges_user"), #alternate URL   
+    url(r'^(?P<username>[\w-]+)/issues/$', 'badges.views.issues',name="badges_issues_user"),          
 )
