@@ -53,12 +53,32 @@ class BadgeClaim(models.Model):
         return json.dumps(self.serialized())
 
     def serialized(self):
-        openid = OpenID.objects.get(user=self.issue.user)
+        issuee = [
+                {
+                    'type': 'email',
+                    'id': self.issue.user.email
+                }
+                ]
         
-        if self.issue.issuer.image is not None:
-            image = self.issue.issuer.image.url
+        try:
+            openid = OpenID.objects.get(user=self.issue.user)
+            issuee.append({
+                                'type': 'openid',
+                                'id': settings.HOST_SERVER + '/openid/%s/' % (openid.openid,),
+                            })
+                
+        except OpenID.DoesNotExist:
+            openid = None
+            
+        
+        if self.issue.badge.image.name is not None:
+            name = self.issue.badge.image.name
+            image = self.issue.badge.image
+            image_url = self.issue.badge.image.url
         else:
-            image = self.issue.issuer.imageUrl
+            image_url = self.issue.badge.imageURL
+            
+        s = settings
             
         return {
             'schema': 'http://example.org/badge/%d' % (self.issue.badge.pk,),
@@ -68,18 +88,10 @@ class BadgeClaim(models.Model):
             'timestamp': calendar.timegm(self.timestamp.timetuple()),
             'expires': calendar.timegm(self.issue.expires.timetuple()),
             'issuer': self.issue.issuer.url,
-            'issueName': self.issue.issuer.name,
+            'issuerName': self.issue.issuer.name,
             'badgeURL': settings.HOST_SERVER + self.issue.badge.get_absolute_url(),
-            'issuee': [
-                {
-                    'type': 'openid',
-                    'id': settings.HOST_SERVER + '/openid/%s/' % (openid.openid,),
-                },
-                {
-                    'type': 'email',
-                    'id': self.issue.user.email
-                }
-            ],
+            'image': image_url,
+            'issuee': issuee,
         }
 
     def __unicode__(self):
