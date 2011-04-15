@@ -6,6 +6,7 @@ from openid_provider.models import OpenID
 import settings
 import calendar
 import datetime
+from django.core.urlresolvers import reverse
 
 try:
     import json
@@ -29,7 +30,7 @@ class Badge(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def get_absolute_url(self):
-        return '/badges/%d' % (self.pk,)
+        return reverse("badges_badge", args=[self.pk])
     
     def __unicode__(self):
         return self.title

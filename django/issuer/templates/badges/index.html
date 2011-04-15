@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{# this template is temporarily hacked for specific demoing use for giving Mark Surman a badge #}
 
 {% block content %}
 <h2>Congratulations {{ user.first_name }} {{ user.last_name }}</h2>
@@ -13,12 +12,18 @@
 
 <div class='badge'>
     <div class='pic'>
-        <img src='/media/images/openweb01.png' alt='badge' />
+        {% if issue.badge.image %}
+        <img src='{{ issue.badge.image.url }}' alt='badge' width="120" height="120"/>
+        {% else %}
+	        {% if issue.badge.imageURL %}
+	        <img src='{{ issue.badge.imageURL }}' alt='badge'  width="120" height="120"/>
+	        {% endif %}
+        {% endif %}
     </div>
     
     <div class='info'>
         <h3 class='title'>{{ issue.badge.title }}</h3>    
-        <h4 class='issuer'><a href='#' title=''>Mozilla Drumbeat Festival 2010</a></h4>
+        <h4 class='issuer'><a href='{{ issue.badge.get_absolute_url }}' title=''>{{ issue.badge.description }}</a></h4>
     </div>
 </div>
 <br />
@@ -35,6 +40,7 @@
   </script>
 </p>
 {% endfor %}
+
   <script src="/media/hub/jschannel/src/jschannel.js"></script>
   <iframe id="hubIframe" src="http://localhost:5555/media/hub/hub.html"></iframe>
 
