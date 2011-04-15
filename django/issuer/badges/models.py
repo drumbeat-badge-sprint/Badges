@@ -101,42 +101,9 @@ class BadgeClaim(models.Model):
         return json.dumps(self.serialized())
 
     def serialized(self):
-        issuee = [
-                {
-                    'type': 'email',
-                    'id': self.issue.user.email
-                }
-                ]
-        
-        try:
-            openid = OpenID.objects.get(user=self.issue.user)
-            issuee.append({
-                                'type': 'openid',
-                                'id': settings.HOST_SERVER + '/openid/%s/' % (openid.openid,),
-                            })
-                
-        except OpenID.DoesNotExist:
-            openid = None
-            
-        
-        if self.issue.badge.image.name is not None:
-            image_url = self.issue.badge.image.url
-        else:
-            image_url = self.issue.badge.imageURL
-            
-        return {
-            'schema': 'http://example.org/badge/%d' % (self.issue.badge.pk,),
-            'mustSupport': [],
-            'title': self.issue.badge.title,
-            'description': self.issue.badge.description,
-            'timestamp': calendar.timegm(self.timestamp.timetuple()),
-            'expires': calendar.timegm(self.issue.expires.timetuple()),
-            'badgeURL': settings.HOST_SERVER + self.issue.badge.get_absolute_url(),
-            'issuer': self.issue.issuer.url,
-            'issuerName': self.issue.issuer.name,
-            'imageURL': image_url,
-            'issuee': issuee,
-        }
+        result = self.issue.serialized()
+        result["timestamp"] = calendar.timegm(self.timestamp.timetuple())
+        return result
 
     def __unicode__(self):
         return "%s accepted %s from %s" % (self.issue.user, self.issue.badge, self.issue.issuer )
