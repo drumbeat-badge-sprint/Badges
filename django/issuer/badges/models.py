@@ -87,10 +87,10 @@ class BadgeClaim(models.Model):
             'description': self.issue.badge.description,
             'timestamp': calendar.timegm(self.timestamp.timetuple()),
             'expires': calendar.timegm(self.issue.expires.timetuple()),
+            'badgeURL': settings.HOST_SERVER + self.issue.badge.get_absolute_url(),
             'issuer': self.issue.issuer.url,
             'issuerName': self.issue.issuer.name,
-            'badgeURL': settings.HOST_SERVER + self.issue.badge.get_absolute_url(),
-            'image': image_url,
+            'imageURL': image_url,
             'issuee': issuee,
         }
 
