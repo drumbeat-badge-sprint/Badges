@@ -1,0 +1,23 @@
+{% extends "badges/base.html" %}
+{% block title %}{{ block.super}} - Badge: {{ badge.title }} {% endblock %}
+{% block links %}{{ block.super}}{% endblock %}
+{% block extrahead %}{{ block.super}}{% endblock %}
+{% block content %}
+{{ block.super}}
+<div class='issuer'>
+    <div class='info'>
+        <h3 class='title'><a href='{{ badge.get_absolute_url }}' title=''>{{ issuer.name }}</a></h3>    
+        <h4 class='issuer'>{{ issuer.url }}</h4>
+    </div>
+</div>
+{% if not request.user.is_anonymous %}
+<div class='badge-actions'>
+    <h3>Request this badge</h3>
+    <ul>
+        {% for badge in issuer.issuable_badges.all %}
+        <li><a href="{{ badge.get_absolute_url }}">{{ badge }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}

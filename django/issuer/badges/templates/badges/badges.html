@@ -1,0 +1,12 @@
+{% extends "badges/base.html" %}
+{% block title %}{{ block.super}} - Badge: {{ badge.title }} {% endblock %}
+{% block links %}{{ block.super}}{% endblock %}
+{% block extrahead %}{{ block.super}}{% endblock %}
+{% block content %}
+{{ block.super}}
+
+{% for badge in badges %}
+    {% include "badges/badge_block.html" %}
+{% endfor %}
+
+{% endblock %}

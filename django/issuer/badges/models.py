@@ -18,6 +18,10 @@ class Issuer(models.Model):
     name = models.CharField(max_length=125)
     url = models.URLField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    issuable_badges = models.ManyToManyField("Badge",related_name="issuers",through="Offering",blank=True)
+
+    def get_absolute_url(self):
+        return reverse("badges_issuer", args=[self.pk])
     
     def __unicode__(self):
         return self.name
@@ -34,6 +38,21 @@ class Badge(models.Model):
     
     def __unicode__(self):
         return self.title
+    
+class Offering(models.Model):
+    badge = models.ForeignKey(Badge,related_name="offerings")
+    issuer = models.ForeignKey(Issuer,related_name="offerings")
+    timestamp = models.DateTimeField(auto_now_add=True)
+    requirements = models.TextField(blank=True)
+    requirementsURL = models.URLField(blank=True,null=True)
+
+    def __unicode__(self):
+        return "%s offers %s" % (self.issuer, self.badge)
+    
+class BadgeRequestManager(models.Manager):
+    
+    def open(self):
+        return self.filter(issue__isnull=True)
 
 class BadgeRequest(models.Model):
     """
@@ -47,6 +66,8 @@ class BadgeRequest(models.Model):
     issuer = models.ForeignKey(Issuer,related_name="requests")
     evidence = models.TextField(blank=True)
     evidenceURL = models.URLField(blank=True,null=True)
+    
+    objects = BadgeRequestManager()
 
     def create_issue(self):
         return BadgeIssue.objects.create(user=self.user,
@@ -54,6 +75,51 @@ class BadgeRequest(models.Model):
                                          request=self,
                                          issuer=self.issuer)
 
+    def json(self):
+        return json.dumps(self.serialized())
+
+    def serialized(self):
+        issuee = [
+                {
+                    'type': 'email',
+                    'id': self.user.email
+                }
+                ]
+        
+        try:
+            openid = OpenID.objects.get(user=self.user)
+            issuee.append({
+                                'type': 'openid',
+                                'id': settings.HOST_SERVER + '/openid/%s/' % (openid.openid,),
+                            })
+                
+        except OpenID.DoesNotExist:
+            openid = None
+            
+        
+        if self.badge.image.name is not None:
+            image_url = settings.HOST_SERVER + self.badge.image.url
+        else:
+            image_url = self.badge.imageURL
+            
+        return {
+            'id': self.badge.pk,
+            'schema': 'http://example.org/badge/%d' % (self.badge.pk,),
+            'mustSupport': [],
+            'title': self.badge.title,
+            'description': self.badge.description,
+            'timestamp': calendar.timegm(self.timestamp.timetuple()),
+            'expires': calendar.timegm(self.expires.timetuple()),
+            'badgeURL': settings.HOST_SERVER + self.badge.get_absolute_url(),
+            'issuer': settings.HOST_SERVER + self.issuer.get_absolute_url(),
+            'issuerURL': self.issuer.url,
+            'issuerName': self.issuer.name,
+            'imageURL': image_url,
+            'issuee': issuee,
+            'evidence': self.evidence,
+            'evidenceURL': self.evidenceURL,
+        }
+        
     def __unicode__(self):
         return "%s requested %s from %s" % (self.user, self.badge, self.issuer )
 
@@ -93,11 +159,12 @@ class BadgeIssue(models.Model):
             
         
         if self.badge.image.name is not None:
-            image_url = self.badge.image.url
+            image_url = settings.HOST_SERVER + self.badge.image.url
         else:
             image_url = self.badge.imageURL
             
         return {
+            'id': self.badge.pk,
             'schema': 'http://example.org/badge/%d' % (self.badge.pk,),
             'mustSupport': [],
             'title': self.badge.title,
@@ -105,7 +172,8 @@ class BadgeIssue(models.Model):
             'timestamp': calendar.timegm(self.timestamp.timetuple()),
             'expires': calendar.timegm(self.expires.timetuple()),
             'badgeURL': settings.HOST_SERVER + self.badge.get_absolute_url(),
-            'issuer': self.issuer.url,
+            'issuer': settings.HOST_SERVER + self.issuer.get_absolute_url(),
+            'issuerURL': self.issuer.url,
             'issuerName': self.issuer.name,
             'imageURL': image_url,
             'issuee': issuee,

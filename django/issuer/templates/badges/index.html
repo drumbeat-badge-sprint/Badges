@@ -1,82 +1,109 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Congratulations {{ user.first_name }} {{ user.last_name }}</h2>
+<div class="welcome" style="float:left;clear:both;width:100%;">
+	{% if issues %}
+	<h2>Congratulations {{ user.first_name }} {{ user.last_name }}</h2>
+	{% else %}
+	<h2>Welcome {{ user.first_name }} {{ user.last_name }}</h2>
+	{% endif %}
+</div>
+
+<div class="badges-issued" style="float:left;clear:both;width:100%;">
 
 {% for issue in issues %}
 <p>
 
 
-<h3>You have been awarded:</h3>
-<br />
-
-<div class='badge'>
-    <div class='pic'>
-        {% if issue.badge.image %}
-        <img src='{{ issue.badge.image.url }}' alt='badge' width="120" height="120"/>
-        {% else %}
-	        {% if issue.badge.imageURL %}
-	        <img src='{{ issue.badge.imageURL }}' alt='badge'  width="120" height="120"/>
+	<div class='badge'>
+	    <div class='pic'>
+	        {% if issue.badge.image %}
+	        <img src='{{ issue.badge.image.url }}' alt='badge' width="120" height="120"/>
+	        {% else %}
+		        {% if issue.badge.imageURL %}
+		        <img src='{{ issue.badge.imageURL }}' alt='badge'  width="120" height="120"/>
+		        {% endif %}
 	        {% endif %}
-        {% endif %}
-    </div>
-    
-    <div class='info'>
-        <h3 class='title'>{{ issue.badge.title }}</h3>    
-        <h4 class='issuer'><a href='{{ issue.badge.get_absolute_url }}' title=''>{{ issue.badge.description }}</a></h4>
-    </div>
-</div>
-<br />
+	    </div>
+	    
+	    <div class='info'>
+	        <h3 class='title'><a href='{{ issue.badge.get_absolute_url }}' title=''>{{ issue.badge.title }}</a></h3>    
+	        <h4 class='issuer'>{{ issue.badge.description }}</h4>
+	    </div>
+	    <div class='actions'>
+			<h3>You have been awarded this badge</h3>
+			<a id="claim_{{ issue.badge.id }}" href="#">Accept</a>
+			<form id="claim_form_{{ issue.badge.id }}" action="{% url badges_claim %}" method="post">
+			  <input type="hidden" name="issue_id" value="{{ issue.id }}" />
+			</form>
+			<script type="text/javascript">
+			  $('#claim_{{ issue.badge.id }}').click(function() {
+			      $('#claim_form_{{ issue.badge.id }}').submit();
+			      return false;
+			  });
+			</script>
+	    </div>
+	</div>
 
-  <a id="claim_{{ issue.badge.id }}" href="#">Accept</a>
-  <form id="claim_form_{{ issue.badge.id }}" action="{% url badges_claim %}" method="post">
-    <input type="hidden" name="issue_id" value="{{ issue.id }}" />
-  </form>
-  <script type="text/javascript">
-    $('#claim_{{ issue.badge.id }}').click(function() {
-        $('#claim_form_{{ issue.badge.id }}').submit();
-        return false;
-    });
-  </script>
 </p>
 {% endfor %}
+
+</div>
 
   <script src="/media/hub/jschannel/src/jschannel.js"></script>
   <iframe id="hubIframe" src="http://localhost:5555/media/hub/hub.html"></iframe>
 
 
-
+<div class="badges-claimed" style="float:left;clear:both;width:100%;">
 <h2>My Badges</h2>
-<ul>
 {% for claim in claimed %}
-  <li>{{ claim.issue.badge.title }} claimed on {{ claim.timestamp }} (<a href="#" id="remove_{{ claim.id }}">Give Back</a>)</li>
-  <form id="drop_claim_{{ claim.id }}" method="post" action="/badges/drop/">
-    <input type="hidden" name="claim_id" value="{{ claim.id }}">
-  </form>
-  <script type="text/javascript">
-    $('#remove_{{ claim.id }}').click(function() {
-       $('#drop_claim_{{claim.id}}').submit();
-       return false;
-     });
-  </script>
-  <script>
-    var hub = Channel.build({
-      window: document.getElementById("hubIframe").contentWindow,
-      origin: "*",
-      scope: "hub"
-    });
+    <div class='badge'>
+        <div class='pic'>
+            {% if claim.issue.badge.image %}
+            <img src='{{ claim.issue.badge.image.url }}' alt='badge' width="120" height="120"/>
+            {% else %}
+                {% if claim.issue.badge.imageURL %}
+                <img src='{{ claim.issue.badge.imageURL }}' alt='badge'  width="120" height="120"/>
+                {% endif %}
+            {% endif %}
+        </div>
+        
+        <div class='info'>
+            <h3 class='title'><a href='{{ claim.issue.badge.get_absolute_url }}' title=''>{{ claim.issue.badge.title }}</a></h3>    
+            <h4 class='issuer'>{{ claim.issue.badge.description }}</h4>
+        </div>
+        <div class='actions'>
+			<a href="#" id="remove_{{ claim.id }}">Give Back</a>
+			<form id="drop_claim_{{ claim.id }}" method="post" action="/badges/drop/">
+    			<input type="hidden" name="claim_id" value="{{ claim.id }}">
+			</form>
+			<script type="text/javascript">
+				$('#remove_{{ claim.id }}').click(function() {
+				   $('#drop_claim_{{claim.id}}').submit();
+				   return false;
+				 });
+			</script>
+			<script>
+				 var hub = Channel.build({
+				   window: document.getElementById("hubIframe").contentWindow,
+				   origin: "*",
+				   scope: "hub"
+				 });
+				
+				 badge = {{ claim.json|safe }};
+				
+				 hub.call({
+				   method: "badge_put",
+				   params: badge,
+				   success: function(v) {
+				  }
+				});
+			</script>
+        </div>
+    </div>
 
-    badge = {{ claim.json|safe }};
-
-    hub.call({
-      method: "badge_put",
-      params: badge,
-      success: function(v) {
-     }
-   });
-    </script>
 {% endfor %}
-</ul>
+</div>
 
 {% endblock %}
 

@@ -18,6 +18,8 @@ Strawman example:
                {"type": "openid", "id": "https://id.sandmill.org/"}],
     "accepted": true,
     "onclick": {"action": "iframe", "url": "http://cc.org/embed/blah.html"}
+    "evidence": "This is all the work I did to earn this badge",
+    "evidenceURL": "https://example.com/my/awesome/work",
 }
 
 Key points:
@@ -42,4 +44,7 @@ Key points:
   from the issuer and when the user has actually accepted that badge.
 * onclick is so we can specify things like "open an iframe to X" or "go to X
   URL" when clicked. [needs work]
+* evidence and evidenceURL are optional fields that allow someone to request
+  a badge and provide written and linked evidence for why he or she should
+  receive it.
   

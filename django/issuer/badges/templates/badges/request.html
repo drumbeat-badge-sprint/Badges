@@ -1,0 +1,34 @@
+{% extends "badges/base.html" %}
+{% block title %}{{ block.super}} - Request Badge: {{ badge.title }} {% endblock %}
+{% block links %}{{ block.super}}{% endblock %}
+{% block extrahead %}{{ block.super}}{% endblock %}
+{% block content %}
+{{ block.super}}
+<div class='badge'>
+    {% if badge.image or badge.imageURL %}
+    <div class='pic'>
+        {% if badge.image %}
+        <img src='{{ badge.image.url }}' alt='badge' width="120" height="120"/>
+        {% else %}
+            {% if badge.imageURL %}
+            <img src='{{ badge.imageURL }}' alt='badge'  width="120" height="120"/>
+            {% endif %}
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    <div class='info'>
+        <h3 class='title'><a href='{{ badge.get_absolute_url }}' title=''>{{ badge.title }}</a></h3>    
+        <h4 class='issuer'>{{ badge.description }}</h4>
+    </div>
+</div>
+<div class='badge-actions'>
+    <h3>Provide the following for {{ issuer }}</h3>
+    <form method="post">
+        <ul>
+        {{ form.as_ul }}
+            <li><input type="submit" value="REQUEST"/></li>
+        </ul>
+    </form>
+</div>
+{% endblock %}
