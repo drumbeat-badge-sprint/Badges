@@ -81,6 +81,15 @@ TEMPLATE_DIRS = (
     path('templates'),
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.core.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    'django.contrib.messages.context_processors.messages',
+    "django.core.context_processors.request",
+)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -90,9 +99,18 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'openid_provider',
     'registration',
+    'south',
+    'djpubsubhubbub',
     'dashboard',
     'badges',
 )
 
 ACCOUNT_ACTIVATION_DAYS = 7
 LOGIN_REDIRECT_URL = '/'
+
+HOST_SERVER = "http://localhost:8000"
+
+try:
+    from localsettings import *
+except ImportError:
+    pass

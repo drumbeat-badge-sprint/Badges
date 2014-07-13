@@ -133,7 +133,9 @@ nav ul li a{
 /* @group Layout */
 #header{
 	background: #e0e0e0;
-	clear: both;
+    float:left;
+    width: 100%;
+    clear: both;
 	border:1px solid #ccc;
   -moz-border-radius:6px;
   margin-top: 10px; 
@@ -180,6 +182,8 @@ nav ul li a{
 
 #body {
   	background: #e0e0e0;
+  	float:left;
+  	width: 100%;
 	clear: both;
 	border:1px solid #ccc;
   -moz-border-radius:6px;
@@ -279,11 +283,13 @@ div.status_update {
 
 /* badge styling */
 .badge {
+	float:left;
+	clear:both;
     width:400px;
     display: block;
     text-align: left;
     padding:10px;
-    height:125px;
+    height:auto;
     border:1px solid #ccc;
     -moz-border-radius:6px;
     background:-moz-linear-gradient(top, #fff 20%, #ddd 100%);
@@ -311,3 +317,19 @@ div.status_update {
 margin-left:15px;
     width: 250px;
   }
+
+/* badge action styling */
+.badge .actions {
+	float:left;
+    width:378px;
+    display: block;
+    text-align: left;
+    padding:10px;
+    height:auto;
+    border:1px solid #ccc;
+    -moz-border-radius:6px;
+    background:#fff;
+    -moz-box-shadow: 0px -2px 0 #666;
+    margin: 8px auto;
+  }
+

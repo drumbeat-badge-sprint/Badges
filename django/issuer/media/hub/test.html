@@ -18,22 +18,44 @@ var hub = Channel.build({
     scope: "hub"
 });
 
-var sampleBadge = {
- "schema": "https://example.com/badge/1",
- "mustSupport": [],
+var sampleRequestBadge = {
+	    "schema":"http://example.org/badge/2",
+	    "mustSupport":[],
+	    "issuer":"http://localhost:5555/badges/issuer/1/",
+	    "badgeURL":"http://localhost:5555/badges/2/",
+	    "issuee":[{"type":"email","id":"edwarm40@newschool.edu"}],
+	    "evidence":"I am very good at JS"
+	};
 
- "issuer": "https://badger.mozilla.com/",
- "badgeURL": "https://badger.mozilla.com/badges/asdf1234",
- "issuee": [{"type": "email", "id": "thunder@mozilla.com"},
-            {"type": "openid", "id": "https://id.sandmill.org/"}]
+hub.call({
+    method: "request_put",
+    params: sampleRequestBadge,
+    success: function(list) {
+        echo("requested badges: " + JSON.stringify(list));
+    }
+});
+
+hub.call({
+    method: "issue_get",
+    params: "",
+    success: function(list) {
+        echo("offered badges: " + JSON.stringify(list));
+    }
+});
+
+var sampleClaimBadge = {
+	"schema":"http://example.org/badge/2",
+    "mustSupport":[],
+    "issuer":"http://localhost:5555/badges/issuer/1/",
+	"badgeURL":"http://localhost:5555/badges/2/",
+	"issuee":[{"type":"email","id":"edwarm40@newschool.edu"}]
 };
 
 hub.call({
     method: "badge_put",
-    params: sampleBadge,
-    success: function(v) {
-        if (v)
-            echo("badge added/refreshed into hub");
+    params: sampleClaimBadge,
+    success: function(list) {
+        echo("badges claimed: " + JSON.stringify(list));
     }
 });
 
@@ -41,7 +63,7 @@ hub.call({
     method: "badge_get",
     params: "",
     success: function(list) {
-        echo("got badges: " + JSON.stringify(list));
+        echo("all my badges: " + JSON.stringify(list));
     }
 });
 

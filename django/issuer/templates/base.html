@@ -24,16 +24,27 @@
 <body>
 <!--<![endif]-->
   <div id="header">
-  <h1><a href="/">Drumbeat certification program</a></h1>
-  <!--<nav id="site">
+  <h1><a href="{% url badges_index %}">Drumbeat certification program</a></h1>
+  <nav id="site">
     <ul>
+      <li><a href="{% url badges_index %}">Dashboard</a></li>
+      <li><a href="{% url badges_badges %}">Badges</a></li>
+      {% if request.user.is_anonymous %}
+      <li><a href="{% url django.contrib.auth.views.login %}">Login</a></li>
+      <li><a href="{% url registration.views.register %}">Register</a></li>
+      {% else %}
+      {% if user.issuers.all %}
+        <li><a href="{% url badges_requests %}">Requests</a></li>
+      {% endif %}
+      <li><a href="{% url django.contrib.auth.views.logout %}">Logout</a></li>
+      {% endif %}
       <li><a href="">{{ _('About') }}</a></li>
-      <li><a href="/badges/">Badges</a></li>
-      <li><a href="">{{ _('Projects') }}</a></li>
+<!--       <li><a href="">{{ _('Projects') }}</a></li>
       <li><a href="">{{ _('People') }}</a></li>
       <li><a href="#">{{ _('Events') }}</a></li>
-    </ul>
-  </nav>-->
+ -->
+     </ul>
+  </nav>
   </div>
   <div id="body">
   {% if messages %}

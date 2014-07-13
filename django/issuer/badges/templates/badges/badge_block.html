@@ -1,0 +1,36 @@
+<div class='badge'>
+    {% if badge.image or badge.imageURL %}
+    <div class='pic'>
+        {% if badge.image %}
+        <img src='{{ badge.image.url }}' alt='badge' width="120" height="120"/>
+        {% else %}
+            {% if badge.imageURL %}
+            <img src='{{ badge.imageURL }}' alt='badge'  width="120" height="120"/>
+            {% endif %}
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    <div class='info'>
+        <h3 class='title'><a href='{{ badge.get_absolute_url }}' title=''>{{ badge.title }}</a></h3>    
+        <h4 class='issuer'>{{ badge.description }}</h4>
+    </div>
+
+	{% if badge.offerings.all %}        
+	<div class='actions'>
+	    <h3>This badge is issued by</h3>
+	    <dl>
+	        {% for offering in badge.offerings.all %}        
+	        <dt><a href="{{ offering.issuer.get_absolute_url }}">{{ offering.issuer }}</a></dt>
+	        <dd>
+	            <p>{{ offering.requirements }}<p>
+	            {% if offering.requirementsURL %}
+	                <p>Read more at <a href="{{ offering.requirementsURL }}">{{ offering.requirementsURL }}</a></p>
+	            {% endif %}
+	            <a href="{% url badges_request offering.issuer.id offering.badge.id %}" id="offering_{{ offering.id }}">Request</a>
+	        </dd>
+	        {% endfor %}
+	    </ul>
+	</div>
+    {% endif %}
+</div>

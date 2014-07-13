@@ -1,0 +1,34 @@
+{% extends "badges/base.html" %}
+{% block title %}{{ block.super}} - Request Badge: {{ badge.title }} {% endblock %}
+{% block links %}{{ block.super}}{% endblock %}
+{% block extrahead %}{{ block.super}}{% endblock %}
+{% block content %}
+{{ block.super}}
+<p>Below are all the requests for the badge issuers that you represent</p>
+{% for issuer in issuers %}
+	<h3>Badge requests for {{issuer}}</h3>
+	<dl>
+	    {% for request in issuer.requests.open %}
+			<dt><a href="{{ request.badge.get_absolute_url }}">{{ request.badge }}</a> by <a href="">{{ request.user }}</a></dt>
+			<dd>
+				<p>{{ request.evidence }}</p>
+				{% if request.evidenceURL %}
+    				<p>Read more at <a href="{{ request.evidenceURL }}">{{ request.evidenceURL }}</a></p>
+				{% endif %}
+               
+                <p><a id="request_{{ request.id }}" href="#">Issue badge</a></p>
+                <form id="issue_form_{{ request.id }}" action="{% url badges_issue %}" method="post">
+					<input type="hidden" name="issuer_id" value="{{ request.issuer.id }}" />
+					<input type="hidden" name="request_id" value="{{ request.id }}" />
+				</form>
+				<script type="text/javascript">
+				$('#request_{{ request.id }}').click(function() {
+				    $('#issue_form_{{ request.id }}').submit();
+				    return false;
+				});
+				</script>
+	       </dd>
+	    {% endfor %}
+	</dl>
+{% endfor %}
+{% endblock %}

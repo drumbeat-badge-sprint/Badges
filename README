@@ -4,17 +4,22 @@ Badge Format
 Strawman example:
 
 {
- "schema": "https://example.com/badge/1",
- "mustSupport": [],
- "title": "School of Webcraft Responder",
- "description": "This badge is in recognition of the helpful responses you have provided to fellow members of the School of Webcraft.",
- "timestamp": "1288882617",
- "expires": "8462729988",
- "badgeURL": "https://badger.mozilla.com/badges/asdf1234",
- "issuer": "https://badger.mozilla.com/",
- "issuee": [{"type": "email", "id": "thunder@mozilla.com"},
-            {"type": "openid", "id": "https://id.sandmill.org/"}],
-  "onclick": {"action": "iframe", "url": "http://cc.org/embed/blah.html"}
+    "schema": "https://example.com/badge/1",
+    "mustSupport": [],
+    "title": "School of Webcraft Responder",
+    "description": "This badge is in recognition of the helpful responses you have provided to fellow members of the School of Webcraft.",
+    "timestamp": "1288882617",
+    "expires": "8462729988",
+    "badgeURL": "https://badger.mozilla.com/badges/asdf1234",
+    "issuer": "https://badger.mozilla.com/",
+    "issuerName": "P2PU School of Webcraft",
+    "imageURL": "https://badger.mozilla.com/badges/asdf1234/badge.jpg",
+    "issuee": [{"type": "email", "id": "thunder@mozilla.com"},
+               {"type": "openid", "id": "https://id.sandmill.org/"}],
+    "accepted": true,
+    "onclick": {"action": "iframe", "url": "http://cc.org/embed/blah.html"}
+    "evidence": "This is all the work I did to earn this badge",
+    "evidenceURL": "https://example.com/my/awesome/work",
 }
 
 Key points:
@@ -35,6 +40,11 @@ Key points:
 * expires could be used to implement dynamic badges, by requiring a refresh of
   the badge. it could also be used to represent time-limited knowledge--e.g. you
   know html5 really well now, but in 3 years maybe that's not true
+* accepted could help distinguish between when a user has been offered a badge
+  from the issuer and when the user has actually accepted that badge.
 * onclick is so we can specify things like "open an iframe to X" or "go to X
   URL" when clicked. [needs work]
+* evidence and evidenceURL are optional fields that allow someone to request
+  a badge and provide written and linked evidence for why he or she should
+  receive it.
   
